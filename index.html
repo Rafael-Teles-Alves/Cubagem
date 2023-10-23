@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Procurar por Código</title>
+</head>
+<body>
+    <h1>Procurar por Código</h1>
+    <form id="searchForm">
+        <label for="codigoInput">Digite o Código:</label>
+        <input type="text" id="codigoInput" placeholder="Digite o código">
+        <button type="button" onclick="searchByCode()">Procurar</button>
+    </form>
+    <div id="result"></div>
+
+    <script>
+        // Tabela de códigos e cubagens
+        const tabela = [
+    { codigo: 10, cubagem: " 0,12 x 0,38 x 0,38" },
+    { codigo:  10, cubagem: "0,12 x 0,38 x 0,38"),
+    { codigo: 13, cubagem: "0,08 x 0,14 x 0,34"),
+    { codigo: 19, cubagem: "0,22 x 0,27 x 0,48"),
+    { codigo: 20, "0,12 x 0,38 x 0,38"),
+    { codigo: 20, "0,12 x 0,38 x 0,38"),
+    { codigo: 26, "0,23 x 0,30 x 0,51"),
+    { codigo: 45, "0,12 x 0,18 x 0,36"),
+    { codigo: 50, "0,20 x 0,20 x 0,58"),
+    { codigo: 58, "0,11 x 0,18 x 0,40"),
+    { codigo: 58, "0,12 x 0,18 x 0,40"),
+    { codigo: 68, "0,12 x 0,28 x 0,34"),
+    { codigo: 73, "0,22 x 0,24 x 0,50"),
+    { codigo: 75, "0,29 x 0,30 x 0,50"),
+    { codigo: 106, "0,28 x 0,35 x 0,12"),
+    { codigo: 111, "0,23 x 0,30 x 0,54"),
+    { codigo: 146, "0,22 x 0,29 x 0,50"),
+    { codigo: 152, "0,13 x 0,23 x 0,42"),
+    { codigo: 156, "0,23 x 0,30 x 0,50"),
+    { codigo: 157, "0,22 x 0,22 x 0,35"),
+    { codigo: 166, "0,20 x 0,29 x 0,50"),
+    { codigo: 178, "0,23 x 0,13 x 0,42"),
+    { codigo: 186, "0,50 x 0,30 x 0,29"),
+    { codigo: 215, "0,23 x 0,23 x 0,44"),
+    { codigo: 248, "0,29 x 0,23 x 0,50"),
+    { codigo: 248, "0,22 x 0,29 x 0,50"),
+    { codigo: 276, "0,13 x 0,23 x 0,43"),
+    { codigo: 276, "0,28 x 0,20 x 0,13"),
+    { codigo: 283, "0,13 x 0,23 x 0,42"),
+    { codigo: 283, "0,13 x 0,20 x 0,28"),
+    { codigo: 301, "0,17 x 0,33 x 0,47"),
+    { codigo: 305, "0,13 x 0,19 x 0,28"),
+    { codigo: 325, "0,25 x 0,20 x 0,58"),
+    { codigo: 325, "0,20 x 0,21 x 0,59"),
+    { codigo: 333, "0,20 x 0,20 x 0,58"),
+    { codigo: 387, "0,23 x 0,23 x 0,43"),
+    { codigo: 393, "0,15 x 0,24 x 0,47"),
+    { codigo: 393, "0,15 x 0,23 x 0,47"),
+    { codigo: 434, "0,11 x 0,28 x 0,30"),
+    { codigo: 435, "0,11 x 0,15 x 0,30"),
+    { codigo: 443, "0,23 x 0,14 x 0,43"),
+    { codigo: 443, "0,23 x 0,23 x 0,44"),
+    { codigo: 557, "0,08 x 0,19 x 0,45"),
+    { codigo: 590, "0,13 x 0,19 x 0,28"),
+    { codigo: 653, "0,22 x 0,32 x 0,48"),
+    { codigo: 654, "0,22 x 0,29 x 0,50"),
+    { codigo: 693, "0,15 x 0,24 x 0,47"),
+    { codigo: 721, "0,14 x 0,24 x 0,36"),
+    { codigo: 736, "0,16 x 0,32 x 0,46"),
+    { codigo: 789, "0,13 x 0,19 x 0,28"),
+    { codigo: 789, "0,15 x 0,31 x 0,47"),
+    { codigo: 791, "0,30 x 0,17 x 0,16"),
+    { codigo: 796, "0,16 x 0,15 x 0,32"),
+    { codigo: 817, "0,13 x 0,22 x 0,42"),
+    { codigo: 897, "0,21 x 0,18 x 0,31"),
+    { codigo: 898, "0,22 x 0,20 x 0,35"),
+    { codigo: 906, "0,22 x 0,29 x 0,50"),
+    { codigo: 951, "0,13 x 0,22 x 0,42"),
+    { codigo: 954, "0,13 x 0,23 x 0,42"),
+    { codigo: 954, "0,13 x 0,22 x 0,43"),
+    { codigo: 960, "0,16 x 0,24 x 0,47"),
+    { codigo: 971, "0,13 x 0,30 x 0,40"),
+    { codigo: 989, "0,27 x 0,11 x 0,34"),
+    { codigo: 1251, "0,22 x 0,29 x 0,50"),
+    { codigo: 1273, "0,22 x 0,29 x 0,50"),
+    { codigo: 1278, "0,23 x 0,30 x 0,49"),
+    { codigo: 1279, "0,22 x 0,29 x 0,50"),
+    { codigo: 1373, "0,20 x 0,22 x 0,47"),
+    { codigo: 1377, "0,43 x 0,14 x 0,23"),
+    { codigo: 1391, "0,13 x 0,23 x 0,40"),
+    { codigo: 1393, "0,12 x 0,28 x 0,40"),
+    { codigo: 1394, "0,23 x 0,30 x 0,49"),
+    { codigo: 1435, "0,50 x 0,29 x 0,24"),
+    { codigo: 1436, "0,23 x 0,30 x 0,50"),
+    { codigo: 1437, "0,23 x 0,30 x 0,58"),
+    { codigo: 1438, "0,50 x 0,29 x 0,22"),
+    { codigo: 1438, "0,24 x 0,30 x 0,49"),
+    { codigo: 1439, "0,21 x 0,30 x 0,49"),
+    { codigo: 1442, "0,50 x 0,29 x 0,24"),
+    { codigo: 1449, "0,23 x 0,30 x 0,50"),
+    { codigo: 1540, "0,12 x 0,17 x 0,36"),
+    { codigo: 1540, "0,12 x 0,18 x 0,37"),
+    { codigo: 1541, "0,08 x 0,16 x 0,31"),
+    { codigo: 1553, "0,12 x 0,30 x 0,39"),
+    { codigo: 1597, "0,13 x 0,19 x 0,28"),
+    { codigo: 1598, "0,28 x 0,19 x 0,13"),
+    { codigo: 1599, "0,13 x 0,19 x 0,28"),
+    { codigo: 1644, "0,17 x 0,32 x 0,46"),
+    { codigo: 1644, "0,46 x 0,17 x 0,14"),
+    { codigo: 1651, "0,46 x 0,17 x 0,14"),
+    { codigo: 1652, "0,46 x 0,17 x 0,14"),
+    { codigo: 1654, "0,46 x 0,17 x 0,14"),
+    { codigo: 1655, "0,46 x 0,17 x 0,14"),
+    { codigo: 1687, "0,16 x 0,32 x 0,47"),
+    { codigo: 1775, "0,30 x 0,60 x 0,17"),
+    { codigo: 1776, "0,47 x 0,30 x 0,60"),
+    { codigo: 1777, "0,60 x 0,30 x 0,17"),
+    { codigo: 1892, "0,24 x 0,27 x 0,40"),
+    { codigo: 1904, "0,13 x 0,23 x 0,43"),
+    { codigo: 1932, "0,17 x 0,12 x 0,41"),
+    { codigo: 1932, "0,13 x 0,23 x 0,42"),
+    { codigo: 1941, "0,13 x 0,19 x 0,42"),
+    { codigo: 1942, "0,11 x 0,18 x 0,40"),
+    { codigo: 1943, "0,11 x 0,18 x 0,40"),
+    { codigo: 1944, "0,11 x 0,18 x 0,40"),
+    { codigo: 2140, "0,15 x 0,26 x 0,38"),
+    { codigo: 2160, "0,15 x 0,27 x 0,50"),
+    { codigo: 2163, "0,23 x 0,22 x 0,54"),
+    { codigo: 2174, "0,10 x 0,14 x 0,29"),
+    { codigo: 2229, "0,12 x 0,18 x 0,40"),
+    { codigo: 2231, "0,22 x 0,29 x 0,50"),
+    { codigo: 2231, "0,23 x 0,50 x 0,30"),
+    { codigo: 2242, "0,22 x 0,24 x 0,49"),
+    { codigo: 2251, "0,12 x 0,28 x 0,40"),
+    { codigo: 2253, "0,13 x 0,15 x 0,46"),
+    { codigo: 2262, "0,22 x 0,29 x 0,50"),
+    { codigo: 2263, "0,10 x 0,27 x 0,29"),
+    { codigo: 2331, "0,22 x 0,29 x 0,50"),
+    { codigo: 2343, "0,10 x 0,15 x 0,30"),
+    { codigo: 2350, "0,22 x 0,26 x 0,38"),
+    { codigo: 2361, "0,14 x 0,22 x 0,32"),
+    { codigo: 2370, "0,22 x 0,28 x 0,49"),
+    { codigo: 2380, "0,46 x 0,17 x 0,14"),
+    { codigo: 2382, "0,46 x 0,17 x 0,14"),
+    { codigo: 2396, "0,08 x 0,17 x 0,34"),
+    { codigo: 2400, "0,41 x 0,18 x 0,12"),
+    { codigo: 2402, "0,14 x 0,18 x 0,47"),
+    { codigo: 2413, "0,14 x 0,22 x 0,47"),
+    { codigo: 2450, "0,12 x 0,22 x 0,31"),
+    { codigo: 2452, "0,12 x 0,22 x 0,31")
+            // Adicione o restante dos códigos e cubagens aqui
+        ];
+
+        // Função para buscar por código
+        function searchByCode() {
+            const codigoInput = document.getElementById("codigoInput").value;
+            const resultDiv = document.getElementById("result");
+
+            const code = parseInt(codigoInput, 10);
+            const item = tabela.find(entry => entry.codigo === code);
+
+            if (item) {
+                resultDiv.innerHTML = `CUBAGEM para o Código: ${item.codigo}: ${item.cubagem}`;
+            } else {
+                resultDiv.innerHTML = "Código não encontrado.";
+            }
+        }
+    </script>
+</body>
+</html>
